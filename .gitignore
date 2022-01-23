@@ -1,4 +1,6 @@
 *.csv
 *.swp
 .ipynb_checkpoints/
+.terra*
 __pycache__/
+terra*
