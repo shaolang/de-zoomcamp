@@ -1,4 +1,4 @@
-notebook        ~= 6.4
+jupyterlab      ~= 3.2
 pandas          ~= 1.4
 psycopg2-binary ~= 2.9
 sqlalchemy      ~= 1.4
