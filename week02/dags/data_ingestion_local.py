@@ -13,11 +13,11 @@ from ingest_script import ingest_callable
 AIRFLOW_HOME = os.environ.get("AIRFLOW_HOME", "/opt/airflow/")
 
 
-PG_HOST = os.getenv('PG_HOST')
-PG_USER = os.getenv('PG_USER')
-PG_PASSWORD = os.getenv('PG_PASSWORD')
-PG_PORT = os.getenv('PG_PORT')
-PG_DATABASE = os.getenv('PG_DATABASE')
+PG_HOST = os.getenv('PG_HOST', 'postgres')
+PG_USER = os.getenv('POSTGRES_USER', 'airflow')
+PG_PASSWORD = os.getenv('POSTGRES_PASSWORD', 'airflow')
+PG_PORT = os.getenv('POSTGRES_PORT', '5432')
+PG_DATABASE = os.getenv('POSTGRES_DB', 'airflow')
 
 
 local_workflow = DAG(
