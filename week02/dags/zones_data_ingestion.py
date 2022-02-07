@@ -12,8 +12,7 @@ dag_params = dict(
     dag_id='Zone_data_ingestion',
     catchup=True,
     is_paused_upon_creation=True,
-    schedule_interval='0 6 2 1 *',
-    start_date=datetime(2022, 1, 2))
+    schedule_interval=None)
 
 
 with DAG(**dag_params) as dag:
