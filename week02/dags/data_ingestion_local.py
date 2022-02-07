@@ -35,7 +35,7 @@ TABLE_NAME_TEMPLATE = 'yellow_taxi_{{ execution_date.strftime(\'%Y_%m\') }}'
 with local_workflow:
     wget_task = BashOperator(
         task_id='wget',
-        bash_command=f'curl -sSL {URL_TEMPLATE} > {OUTPUT_FILE_TEMPLATE}'
+        bash_command=f'curl -sSLf {URL_TEMPLATE} > {OUTPUT_FILE_TEMPLATE}'
     )
 
     ingest_task = PythonOperator(
@@ -48,7 +48,8 @@ with local_workflow:
             port=PG_PORT,
             db=PG_DATABASE,
             table_name=TABLE_NAME_TEMPLATE,
-            csv_file=OUTPUT_FILE_TEMPLATE
+            csv_file=OUTPUT_FILE_TEMPLATE,
+            datetime_cols=['tpep_pickup_datetime', 'tpep_dropoff_datetime'],
         ),
     )
 
