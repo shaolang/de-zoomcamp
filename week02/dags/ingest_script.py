@@ -12,10 +12,10 @@ def ingest_callable(
     engine = _create_engine(user, password, host, port, db)
     df_iter = pd.read_csv(csv_file, iterator=True, chunksize=100000)
 
-    more = _insert_chunk(df_iter, table_name, engine, True, datetime_cols)
+    more = _insert_chunk(df_iter, table_name, engine, 'replace', datetime_cols)
 
     while more:
-        more = _insert_chunk(df_iter, table_name, engine, False, datetime_cols)
+        more = _insert_chunk(df_iter, table_name, engine, 'append', datetime_cols)
 
 
 def _create_engine(user, password, host, port, db):
@@ -27,7 +27,7 @@ def _create_engine(user, password, host, port, db):
     return engine
 
 
-def _insert_chunk(df_iter, table_name, engine, first_chunk, datetime_cols):
+def _insert_chunk(df_iter, table_name, engine, if_exists, datetime_cols):
     try:
         t_start = time()
         df = next(df_iter)
@@ -35,16 +35,13 @@ def _insert_chunk(df_iter, table_name, engine, first_chunk, datetime_cols):
         for col in datetime_cols:
             df[col] = pd.to_datetime(df[col])
 
-        if first_chunk:
-            df.to_sql(name=table_name, con=engine, if_exists='replace')
-        else:
-            df.to_sql(name=table_name, con=engine, if_exists='append')
+        df.to_sql(name=table_name, con=engine, if_exists=if_exists)
 
         t_end = time()
 
         print('inserted another chunk, took %.3f second' % (t_end - t_start))
 
-        return False
+        return True
     except StopIteration:
         print('completed')
-        return True
+        return False
