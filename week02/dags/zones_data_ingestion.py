@@ -12,13 +12,14 @@ dag_params = dict(
     dag_id='Zone_data_ingestion',
     catchup=True,
     is_paused_upon_creation=True,
-    schedule_interval=None)
+    schedule_interval=None,
+    start_date=datetime(2019, 1, 1))
 
 
 with DAG(**dag_params) as dag:
     download = BashOperator(
         task_id='download_zone_data',
-        bash_command=f'curl -sSLf {URL} -o {FOUT}'
+        bash_command=f'curl -sSLf {URL} -o {FOUT}',
     )
 
     ingest = PythonOperator(
