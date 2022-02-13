@@ -9,6 +9,8 @@ services:
       interval: 5s
       retries: 5
     image: postgres:13
+    ports:
+      - "5432:5432"
     restart: always
     volumes:
       - g:/cache/zoomcamp/db:/var/lib/postgresql/data
